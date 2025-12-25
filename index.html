@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonial Slider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .slider-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .slider-header h1 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .slider-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+        
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            min-width: 100%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .testimonial-content {
+            flex-grow: 1;
+        }
+        
+        .quote-icon {
+            font-size: 2.2rem;
+            color: #3b82f6;
+            opacity: 0.3;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .reviewer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1.2rem;
+            border: 3px solid #f1f5f9;
+        }
+        
+        .reviewer-details h3 {
+            font-size: 1.3rem;
+            color: #1e293b;
+            margin-bottom: 0.2rem;
+        }
+        
+        .reviewer-title {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        /* Navigation Buttons */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .nav-btn {
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            pointer-events: all;
+            transition: all 0.3s ease;
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+        
+        .nav-btn:hover {
+            background: #3b82f6;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        /* Dots Indicator */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.5rem;
+            gap: 0.8rem;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot.active {
+            background: #3b82f6;
+            transform: scale(1.2);
+        }
+        
+        .dot:hover {
+            background: #94a3b8;
+        }
+        
+        /* Slide Animation */
+        @keyframes fadeIn {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+        
+        .slide.active {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 2rem;
+            }
+            
+            .slider-header h1 {
+                font-size: 2rem;
+            }
+            
+            .testimonial-text {
+                font-size: 1.1rem;
+            }
+            
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .slide {
+                padding: 1.5rem;
+            }
+            
+            .testimonial-text {
+                font-size: 1rem;
+            }
+            
+            .reviewer-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .reviewer-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="testimonial-slider">
+        <div class="slider-header">
+            <h1>Client Testimonials</h1>
+            <p>See what our clients have to say about their experiences</p>
+        </div>
+        
+        <div class="slider-container">
+            <div class="slider-track">
+                <!-- Slide 1 -->
+                <div class="slide active">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "The platform transformed our development workflow completely. Integration was seamless and the support team was incredibly responsive. Our productivity increased by 40% within the first month."
+                        </p>
+                    </div>
+                    <div class="reviewer-info">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Alexandra Chen" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <h3>Alexandra Chen</h3>
+                            <div class="reviewer-title">Full Stack Developer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "As a UX designer, I appreciate the attention to detail and intuitive interface. The collaborative tools have made cross-team projects so much smoother. It's been a game-changer for our agency."
+                        </p>
+                    </div>
+                    <div class="reviewer-info">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marcus Johnson" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <h3>Marcus Johnson</h3>
+                            <div class="reviewer-title">UX/UI Designer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="slide">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "Implementation was flawless and our deployment cycles have shortened significantly. The automation features alone saved our team hundreds of hours each quarter. Highly recommended!"
+                        </p>
+                    </div>
+                    <div class="reviewer-info">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sophia Rodriguez" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <h3>Sophia Rodriguez</h3>
+                            <div class="reviewer-title">DevOps Engineer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="slide">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "This service revolutionized how our remote team collaborates. The real-time features and seamless integration with our existing tools made the transition effortless. Customer support is outstanding."
+                        </p>
+                    </div>
+                    <div class="reviewer-info">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="David Kim" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <h3>David Kim</h3>
+                            <div class="reviewer-title">Project Manager</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="slider-nav">
+                <button class="nav-btn prev-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="nav-btn next-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Dots Indicator -->
+        <div class="slider-dots">
+            <div class="dot active" data-slide="0"></div>
+            <div class="dot" data-slide="1"></div>
+            <div class="dot" data-slide="2"></div>
+            <div class="dot" data-slide="3"></div>
+        </div>
+    </div>
+
+    <script>
+        const sliderTrack = document.querySelector('.slider-track');
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        // Function to update slider position
+        function updateSlider() {
+            // Move the track
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update active slide
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            
+            // Update active dot
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+        }
+        
+        // Next button click
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        });
+        
+        // Previous button click
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        });
+        
+        // Dot click
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlider();
+            });
+        });
+        
+        // Auto slide every 5 seconds
+        let slideInterval = setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }, 5000);
+        
+        // Pause auto-slide on hover
+        const sliderContainer = document.querySelector('.slider-container');
+        sliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        sliderContainer.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 5000);
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+            } else if (e.key === 'ArrowRight') {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }
+        });
+    </script>
+</body>
+</html>
